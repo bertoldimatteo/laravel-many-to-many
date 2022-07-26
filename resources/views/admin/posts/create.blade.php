@@ -39,7 +39,7 @@
                         <h5>Tags</h5>
                         @foreach ($tags as $tag)
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="{{$tag->slug}}" value="{{$tag->id}}">
+                                <input class="form-check-input" type="checkbox" id="{{$tag->slug}}" value="{{$tag->id}}" name="tags[]">
                                 <label class="form-check-label" for="{{$tag->slug}}">{{$tag->name}}</label>
                             </div>
                         @endforeach
