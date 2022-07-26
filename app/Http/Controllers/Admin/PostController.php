@@ -48,7 +48,8 @@ class PostController extends Controller
             'title' => 'required | string | max:255',
             'content' => 'required | string | max:65000',
             'published' => 'sometimes | accepted',
-            'category_id' => 'nullable | exists:categories,id'
+            'category_id' => 'nullable | exists:categories,id',
+            'tags' => 'nullable | exists:tags,id'
         ]);
         // prendo i dati request e creo il post
         $data = $request->all();
@@ -59,6 +60,11 @@ class PostController extends Controller
 
         $newPost->published = isset($newPost->published);
         $newPost->save();
+
+        // se ci sono dei tag associati, li associo al post appena creato
+        if(isset($data['tags'])){
+            $newPost->tags()->sync($data['tags']);
+        }
         // reinidirizzo a un altra pagina
         return redirect()->route('admin.posts.show', $newPost->id);
     }
