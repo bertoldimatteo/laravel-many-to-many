@@ -93,6 +93,7 @@ class PostController extends Controller
         $postTags = $post->tags->map(function ($item){
             return $item->id;
         })->toArray();
+
         return view('admin.posts.edit', compact('post', 'categories', 'tags', 'postTags'));
     }
 
@@ -110,7 +111,8 @@ class PostController extends Controller
             'title' => 'required | string | max:255',
             'content' => 'required | string | max:65000',
             'published' => 'sometimes | accepted',
-            'category_id' => 'nullable | exists:categories,id'
+            'category_id' => 'nullable | exists:categories,id',
+            'tags' => 'nullable | exists:tags,id'
         ]);
         // aggiornamento
         $data = $request->all(); // prendo tutti i dati
@@ -124,6 +126,10 @@ class PostController extends Controller
         $post->published = isset($post->published);
 
         $post->save();
+
+        $tags = isset($data['tags']) ? $data['tags'] : [];
+
+        $post->tags()->sync($tags);
         // return
         return redirect()->route('admin.posts.show', $post->id);
     }
