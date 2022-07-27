@@ -71,9 +71,9 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Tag $tag)
     {
-        //
+        return view('admin.tags.edit', compact('tag'));
     }
 
     /**
@@ -83,9 +83,20 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tag $tag)
     {
-        //
+        // validazione
+        $request->validate([
+            'name' => "required|string|max:100|unique:tags,name, {$tag->id}",
+        ]);
+
+        $data = $request->all();
+        // aggiornamento
+        $tag->name = $data['name'];
+        $tag->slug = Str::of($tag->name)->slug('-');
+        $tag->save();
+        // reindirizzamento
+        return redirect()->route('admin.tags.index');
     }
 
     /**
