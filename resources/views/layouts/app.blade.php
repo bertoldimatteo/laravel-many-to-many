@@ -35,6 +35,7 @@
                     <div class="navbar-nav mr-auto">
                         <a class="navbar-brand" href="{{route('admin.posts.index')}}">All Posts</a>
                         <a class="navbar-brand" href="{{route('admin.categories.index')}}">All Categories</a>
+                        <a class="navbar-brand" href="{{route('admin.tags.index')}}">All Tags</a>
                     </div>
 
                     <!-- Right Side Of Navbar -->
